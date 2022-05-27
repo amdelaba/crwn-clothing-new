@@ -21,14 +21,15 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 // Google specific
 // prompt: 'select_account', makes it so everytime we interact, we are forced to select account
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: 'select_account'
 })
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
@@ -36,8 +37,8 @@ export  const createUserDocumentFromAuth = async (userAuth) => {
   const userDocRef = doc(db, 'users', userAuth.uid )
   console.log(userDocRef)
   const userSnapshot = await getDoc(userDocRef);
-  console.log(userSnapshot)
-  console.log(userSnapshot.exists())
+  console.log({userSnapshot})
+  console.log({'user already exists': userSnapshot.exists()})
   
   // if user data does not exist
   // create/set the document with the userAuth data in collection
@@ -54,7 +55,7 @@ export  const createUserDocumentFromAuth = async (userAuth) => {
       })
       
     } catch (error) {
-      console.log('error creating user', error.message)
+      console.error('error creating user', error.message)
     }
 
   }
