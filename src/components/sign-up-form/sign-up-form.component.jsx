@@ -20,10 +20,14 @@ const SignUpForm = () => {
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   }
+  
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormFields({...formFields, [name]: value})
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     console.log('handleSubmit', {formFields})
 
     //confirm pass matches     
@@ -46,10 +50,6 @@ const SignUpForm = () => {
 
   }
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormFields({...formFields, [name]: value})
-  }
 
   return(
 
@@ -95,14 +95,14 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <Button type="submit" buttonType='inverted' >
+        <Button type="submit" >
           Sign Up
         </Button>
       
       </form>
     </div>
 
-  )
+  );
 
 };
 
