@@ -1,4 +1,4 @@
-import { getRedirectResult } from 'firebase/auth';
+// import { getRedirectResult } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword, signInWithGoogleRedirect, signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
 import Button from '../button/button.component';
@@ -15,6 +15,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -29,11 +30,10 @@ const SignInForm = () => {
     console.log('handleSubmit', {formFields})
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(email, password)
-      console.log(response);
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
-    } catch (error) {
 
+    } catch (error) {
       switch (error.code) {
         case 'auth/wrong-password':
           alert('Incorrect password for email')
@@ -51,26 +51,27 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async() => {
-    const { user } = await signInWithGooglePopup();
-    console.log(user);
-    const userDocRef = await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
+    // const { user } = await signInWithGooglePopup();
+    // console.log(user);
+    // const userDocRef = await createUserDocumentFromAuth(user);
     // console.log(userDocRef);
   };
 
   // Code for Redirect Google SignIn (Not really needed)
   // Will run when component first mounts, AND
   // after redirect from Google SignIn
-  useEffect(() => {
-    async function getUserFromRedirect(){
-      const response = await getRedirectResult(auth);
-      console.log({'user from redirect': response.user})
-      if (response){
-        const userDocRef = await createUserDocumentFromAuth(response.user);
-        // console.log(userDocRef);
-      }
-    }
-    getUserFromRedirect();
-  }, []);
+  // useEffect(() => {
+  //   async function getUserFromRedirect(){
+  //     const response = await getRedirectResult(auth);
+  //     console.log({'user from redirect': response.user})
+  //     if (response){
+  //       const userDocRef = await createUserDocumentFromAuth(response.user);
+  //       // console.log(userDocRef);
+  //     }
+  //   }
+  //   getUserFromRedirect();
+  // }, []);
 
 
   return(
