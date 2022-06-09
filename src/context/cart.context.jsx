@@ -1,10 +1,27 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+
+const addCartItem = (cartItems, productToAdd) => {
+
+  const existingCartItem = cartItems.find((cartItem) => cartItem.id === productToAdd.id);
+
+  if (existingCartItem) {
+    return cartItems.map((cartItem) => 
+      cartItem.id === productToAdd.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
+    );
+  }
+
+  return [...cartItems, { ...productToAdd, quantity: 1 } ]
+};
 
 // Actual value you want to access
 // gets passed default value (not necessarily the initial value)
 export const CartContext = createContext({
   isCartOpen: false,
-  setIsCartOpen: () => {}
+  setIsCartOpen: () => {},
+  cartItems: [],
+  addItemToCart: () => {},
+  cartCount: 0, 
+  setCartCount: () => {},
 });
 
 // functional component
@@ -12,7 +29,22 @@ export const CartContext = createContext({
 export const CartProvider = ({ children }) => {
   
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const value = { isCartOpen, setIsCartOpen };
+  const [cartItems, setCartItems] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
+
+  const addItemToCart = (productToAdd) => {
+    setCartItems(addCartItem(cartItems, productToAdd));
+  };
+
+  useEffect(() => {
+    const newCartCount =
+      cartItems.reduce((total, cartItem) => {
+        return total + cartItem.quantity
+      }, 0);
+    setCartCount(newCartCount);
+  }, [cartItems]);
+
+  const value = { isCartOpen, setIsCartOpen, addItemToCart, cartItems, cartCount};
 
   return <CartContext.Provider value={value}> {children} </CartContext.Provider>
 };
