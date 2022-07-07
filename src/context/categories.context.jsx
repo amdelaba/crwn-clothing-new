@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { getCategoriesAndDocuments } from '../utils/firebase/firebase.utils'
-import SHOP_DATA from "../shop-data.js";
+// import SHOP_DATA from "../shop-data.js";
 
 // Actual value you want to access
 // gets passed default value (not necessarily the initial value)
@@ -22,7 +22,6 @@ export const CategoriesProvider = ({ children }) => {
   useEffect(() => {
     const getCategoriesMap = async () => {
       const categoryMap = await getCategoriesAndDocuments();  // from firebase DB
-      // console.log({categoryMap});
       setCategoriesMap(categoryMap);
     };
     getCategoriesMap();

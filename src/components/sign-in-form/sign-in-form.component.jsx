@@ -1,7 +1,7 @@
 // import { getRedirectResult } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword, signInWithGoogleRedirect, signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
-import Button from '../button/button.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
 import './sign-in-form.styles.scss'
 
@@ -52,15 +52,12 @@ const SignInForm = () => {
 
   const signInWithGoogle = async() => {
     await signInWithGooglePopup();
-    // const { user } = await signInWithGooglePopup();
-    // console.log(user);
-    // const userDocRef = await createUserDocumentFromAuth(user);
-    // console.log(userDocRef);
   };
 
   // Code for Redirect Google SignIn (Not really needed)
   // Will run when component first mounts, AND
   // after redirect from Google SignIn
+  //
   // useEffect(() => {
   //   async function getUserFromRedirect(){
   //     const response = await getRedirectResult(auth);
@@ -104,7 +101,7 @@ const SignInForm = () => {
         <div className='buttons-container'>
           <Button type="submit"> Sign In </Button>
           {/* buttons are submit by default, so we need type='button' to prevent form*/}
-          <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google Sign In</Button>
+          <Button type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>Google Sign In</Button>
         </div>
 
         {/* <Button onClick={signInWithGoogleRedirect} buttonType='google'>Sign In with Google Redirect</Button> */}
